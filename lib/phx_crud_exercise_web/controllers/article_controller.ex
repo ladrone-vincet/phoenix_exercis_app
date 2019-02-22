@@ -16,10 +16,8 @@ defmodule PhxCrudExerciseWeb.ArticleController do
     render(conn, "index.json", articles: articles ++ raw_data)
   end
 
-  def create(conn, struct) do
-    #IO.puts(struct)
-    #IO.puts(article_params)
-    with {:ok, %Article{} = article} <- Content.create_article(struct) do
+  def create(conn, params) do
+    with {:ok, %Article{} = article} <- Content.create_article(params) do
       conn
       |> put_status(:created)
       |> put_resp_header("location", Routes.article_path(conn, :show, article))

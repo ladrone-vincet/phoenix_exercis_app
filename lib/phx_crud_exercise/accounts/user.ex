@@ -7,7 +7,6 @@ defmodule PhxCrudExercise.Accounts.User do
     field :age, :integer
     field :first_name, :string
     field :last_name, :string
-    field :password, virtual: true
     field :password_hash, :string
 
     has_many :articles, PhxCrudExercise.Content.Article
@@ -24,5 +23,23 @@ defmodule PhxCrudExercise.Accounts.User do
     |> cast(attrs, @required_fields ++ @optional_fields)
     |> validate_inclusion(:age, 13..150)
     |> validate_required(@required_fields)
+  end
+
+  def registration_changeset(user, attrs) do
+    user
+    |> changeset(attrs)
+    |> assign_token
+  end
+
+  defp assign_token(changeset) do
+    case changeset do
+      %Ecto.Changeset{valid?: true} ->
+        put_change(changeset, :password_hash, create_token())
+      _ -> changeset
+    end
+  end
+
+  defp create_token() do
+    "pass"
   end
 end

@@ -37,6 +37,20 @@ defmodule PhxCrudExercise.Accounts do
   """
   def get_user!(id), do: Repo.get!(User, id)
 
+
+
+  @doc """
+  Checks whether there is a user with such token
+  """
+  def is_token_assigned(token) do
+     cond do
+       user = Repo.get_by(User, token: token) ->
+          {:ok, user}
+        true ->
+          {:error, nil}
+     end
+   end
+
   @doc """
   Creates a user.
 
@@ -51,7 +65,7 @@ defmodule PhxCrudExercise.Accounts do
   """
   def create_user(attrs \\ %{}) do
     %User{}
-    |> User.changeset(attrs)
+    |> User.registration_changeset(attrs)
     |> Repo.insert()
   end
 

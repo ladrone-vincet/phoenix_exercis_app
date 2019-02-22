@@ -11,7 +11,11 @@ defmodule PhxCrudExerciseWeb.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
+  end
 
+  pipeline :process_token do
+    plug PhxCrudExerciseWeb.Plugs.SetUser
+    plug PhxCrudExerciseWeb.Plugs.RequireAuth
   end
 
   # scope "/", PhxCrudExerciseWeb do
@@ -22,7 +26,7 @@ defmodule PhxCrudExerciseWeb.Router do
 
   # Other scopes may use custom stacks.
   scope "/api", PhxCrudExerciseWeb do
-    pipe_through :api
+    pipe_through [:api, :process_token]
 
 
     resources "/users", UserController, only: [:create, :show]
