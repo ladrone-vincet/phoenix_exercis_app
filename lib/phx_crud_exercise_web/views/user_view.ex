@@ -6,7 +6,7 @@ defmodule PhxCrudExerciseWeb.UserView do
     %{data: render_one(user, UserView, "user.json")}
   end
 
-  def render("show_with_token", %{user: user}) do
+  def render("show_with_token.json", %{user: user}) do
     %{data: render_one(user, UserView, "user_with_token.json")}
   end
 
@@ -17,7 +17,7 @@ defmodule PhxCrudExerciseWeb.UserView do
       age: user.age}
   end
 
-  def render("user_with_token", %{user: user}) do
+  def render("user_with_token.json", %{user: user}) do
     %{id: user.id,
       first_name: user.first_name,
       last_name: user.last_name,

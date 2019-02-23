@@ -21,6 +21,20 @@ defmodule PhxCrudExercise.Content do
     Repo.all(Article)
   end
 
+
+    @doc """
+    Returns the list of articles with owners
+
+    """
+  def list_articles_with_owners do
+    user_only = [:id, :first_name, :last_name, :age]
+
+    query = from article in Article,
+            join: user in assoc(article, :user),
+            select: %{article: article, owner: map(user, ^user_only)}
+    Repo.all(query)
+  end
+
   @doc """
   Gets a single article.
 
@@ -36,6 +50,22 @@ defmodule PhxCrudExercise.Content do
 
   """
   def get_article!(id), do: Repo.get!(Article, id)
+
+
+  @doc """
+  Gets a single article of the user with provided token.
+
+  Returns nil if not found.
+  """
+  def does_article_belongs_to_token_owner?(token, id) do
+
+    query = from article in Article,
+            join: user in assoc(article, :user),
+            where: user.password_hash == ^token and article.id == ^id,
+            select: {article, user}
+    query
+    |> Repo.exists?
+  end
 
   @doc """
   Creates a article.
@@ -55,6 +85,18 @@ defmodule PhxCrudExercise.Content do
     |> Repo.insert()
   end
 
+
+    @doc """
+    Creates a article with attached user.
+
+    """
+  def create_article(attrs, user) do
+    %Article{}
+    |> Article.changeset(attrs)
+    |> Ecto.Changeset.change(user_id: user.id)
+    |> Repo.insert()
+
+  end
   @doc """
   Updates a article.
 

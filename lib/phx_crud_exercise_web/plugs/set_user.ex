@@ -7,24 +7,24 @@ defmodule  PhxCrudExerciseWeb.Plugs.SetUser do
   end
 
 
-  def call(conn, %{"token" => token}) do
-    IO.puts(token)
-    IO.puts("call1")
-    if conn.assigns[:user] do
-      conn
-    else
-      case Accounts.is_token_assigned(token) do
-        {:ok, user} -> assign(conn, :user, user)
-        {:error, _} -> assign(conn, :user, nil)
-      end
-    end
+  def call(conn, params) do
+    conn
+    |> attach_user_through_token(params)
   end
 
-  def call(conn, params) do
-    IO.puts(params)
-    IO.puts("call2")
-    assign(conn, :user, nil)
-    conn
+  defp attach_user_through_token(conn, _params) do
+
+    if not Map.has_key?(conn.params, "token") do
+      assign(conn, :user, {:error, "Plese provide the token"})
+    else
+      token = conn.params["token"]
+      case Accounts.is_token_assigned(token) do
+        {:ok, user} -> assign(conn, :user, {:ok, user})
+        {:error, message} -> assign(conn, :user, {:error, message})
+      end
+    end
+
+    # else
   end
 
 end

@@ -14,7 +14,7 @@ config :phx_crud_exercise,
 config :phx_crud_exercise, PhxCrudExerciseWeb.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "SPkasqQbqkYPqORhU3w3EaZLJOG0ALiEWxtNW8iZXFQ5tZ7kom4EgaiLbPhoqv+L",
-  render_errors: [view: PhxCrudExerciseWeb.ErrorView, accepts: ~w(html json)],
+  render_errors: [view: PhxCrudExerciseWeb.ErrorView, accepts: ~w(json)],
   pubsub: [name: PhxCrudExercise.PubSub, adapter: Phoenix.PubSub.PG2]
 
 # Configures Elixir's Logger

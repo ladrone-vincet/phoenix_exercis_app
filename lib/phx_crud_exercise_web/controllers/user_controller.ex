@@ -17,8 +17,17 @@ defmodule PhxCrudExerciseWeb.UserController do
   end
 
   def show(conn, %{"id" => id}) do
-    user = Accounts.get_user!(id)
-    render(conn, "show.json", user: user)
-  end
 
+
+    try do
+      user = Accounts.get_user!(id)
+      render(conn, "show.json", user: user)
+    rescue
+      Ecto.NoResultsError ->
+        conn
+        |> put_view(PhxCrudExerciseWeb.ErrorView)
+        |> render("404.json")
+        |> halt()
+      end
+    end
 end

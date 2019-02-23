@@ -23,6 +23,7 @@ defmodule PhxCrudExercise.Accounts.User do
     |> cast(attrs, @required_fields ++ @optional_fields)
     |> validate_inclusion(:age, 13..150)
     |> validate_required(@required_fields)
+    |> unique_constraint(:password_hash)
   end
 
   def registration_changeset(user, attrs) do
@@ -40,6 +41,11 @@ defmodule PhxCrudExercise.Accounts.User do
   end
 
   defp create_token() do
-    "pass"
+    leng = "Netguru" |> String.to_charlist |> hd
+    random_string(leng)
+  end
+
+  defp random_string(length) do
+    :crypto.strong_rand_bytes(length) |> Base.url_encode64 |> binary_part(0, length)
   end
 end

@@ -6,16 +6,19 @@ defmodule  PhxCrudExerciseWeb.Plugs.RequireAuth do
   end
 
   def call(conn, _params) do
-    error_message = "You are not authorised. Please provide correct token."
 
-    if conn.assigns[:user] do
-      conn
-    else
-      conn
-      |> put_status(:unauthorized)
-      |> put_view(PhxCrudExerciseWeb.ErrorView)
-      |> render("401.json", message: error_message)
-      |> halt()
+    case conn.assigns[:user] do
+      {:ok, _user} -> conn
+      {:error, message} -> conn
+        |> put_status(:unauthorized)
+        |> put_view(PhxCrudExerciseWeb.ErrorView)
+        |> render("401.json", message: message)
+        |> halt()
+      nil -> conn
+        |> put_status(:not_found)
+        |> put_view(PhxCrudExerciseWeb.ErrorView)
+        |> render("404.json")
+        |> halt()
     end
   end
 

@@ -44,12 +44,13 @@ defmodule PhxCrudExercise.Accounts do
   """
   def is_token_assigned(token) do
      cond do
-       user = Repo.get_by(User, token: token) ->
+       user = Repo.get_by(User, password_hash: token) ->
           {:ok, user}
         true ->
           {:error, nil}
      end
    end
+   def is_token_assigned(), do: {:error, nil}
 
   @doc """
   Creates a user.

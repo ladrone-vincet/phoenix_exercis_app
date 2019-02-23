@@ -11,5 +11,6 @@ defmodule PhxCrudExercise.Repo.Migrations.CreateUsers do
       timestamps()
     end
 
+    create unique_index(:users, [:password_hash])
   end
 end
