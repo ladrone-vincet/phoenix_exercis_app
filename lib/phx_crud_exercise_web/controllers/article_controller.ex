@@ -29,16 +29,16 @@ defmodule PhxCrudExerciseWeb.ArticleController do
 
     try do
       article = Content.get_article!(id)
+      IO.inspect article
       owner = Accounts.get_user!(article.user_id)
       render(conn, "show.json", article: article, owner: owner)
     rescue
-      Ecto.NoResultsError ->
-        conn
-        |> put_view(PhxCrudExerciseWeb.ErrorView)
-        |> render("404.json")
-        |> halt()
+      _e in [Ecto.NoResultsError, ArgumentError] ->
+        render_404(conn)
       end
+
   end
+
 
   def update(conn, %{"id" => id, "article" => article_params}) do
     force_ownership(conn, id)
@@ -72,5 +72,12 @@ defmodule PhxCrudExerciseWeb.ArticleController do
       |> render("401.json", message: "You don't have permissions to affect this article.")
       |> halt()
     end
+  end
+
+  defp render_404(conn) do
+    conn
+    |> put_view(PhxCrudExerciseWeb.ErrorView)
+    |> render("404.json")
+    |> halt()
   end
 end

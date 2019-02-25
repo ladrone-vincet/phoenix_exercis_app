@@ -28,13 +28,13 @@ defmodule PhxCrudExerciseWeb.UserControllerTest do
 
   describe "create user" do
     test "renders user when data is valid", %{conn: conn} do
-      conn = post(conn, Routes.user_path(conn, :create), user: @create_attrs)
+      conn = post(conn, Routes.user_path(conn, :create), @create_attrs)
       assert %{"id" => id} = json_response(conn, 201)["data"]
 
       conn = get(conn, Routes.user_path(conn, :show, id))
 
       assert %{
-               "id" => id,
+               "id" => ^id,
                "age" => 42,
                "first_name" => "some first_name",
                "last_name" => "some last_name"

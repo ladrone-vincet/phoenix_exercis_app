@@ -14,9 +14,14 @@ defmodule  PhxCrudExerciseWeb.Plugs.SetUser do
 
   defp attach_user_through_token(conn, _params) do
 
-    if not Map.has_key?(conn.params, "token") do
+    cond do
+
+    conn.assigns.user -> conn
+
+    not Map.has_key?(conn.params, "token") ->
       assign(conn, :user, {:error, "Plese provide the token"})
-    else
+
+    true ->
       token = conn.params["token"]
       case Accounts.is_token_assigned(token) do
         {:ok, user} -> assign(conn, :user, {:ok, user})
