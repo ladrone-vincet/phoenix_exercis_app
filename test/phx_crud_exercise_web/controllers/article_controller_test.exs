@@ -86,6 +86,7 @@ defmodule PhxCrudExerciseWeb.ArticleControllerTest do
     test "renders article when data is valid", %{conn: conn, article: %Article{} = article} do
       conn = put(conn, Routes.article_path(conn, :update, article), article: @update_attrs)
       assert %{"article" => %{"id" => _id}} = json_response(conn, 200)["data"]
+      
       conn = get(conn, Routes.article_path(conn, :show, article))
 
       assert %{"article" => %{

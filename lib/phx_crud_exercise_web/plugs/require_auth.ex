@@ -6,7 +6,7 @@ defmodule  PhxCrudExerciseWeb.Plugs.RequireAuth do
   end
 
   def call(conn, _params) do
-
+    IO.inspect conn.assigns[:user] 
     case conn.assigns[:user] do
       {:ok, _user} -> conn
       {:error, message} -> conn

@@ -35,14 +35,13 @@ defmodule PhxCrudExerciseWeb.Router do
     pipe_through [:api, :process_token]
 
     resources "/users", UserController, only: [:show]
-    resources "/articles", ArticleController, except: [:new, :edit, :index, :show]
+    resources "/articles", ArticleController
 
   end
 
   scope "/api", PhxCrudExerciseWeb do
     pipe_through [:api]
 
-    resources "/articles", ArticleController, only: [:index, :show]
     resources "/users", UserController, only: [:create]
 
     # get "/*path", ErrorView, status: :not_found

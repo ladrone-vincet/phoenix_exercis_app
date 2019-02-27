@@ -18,9 +18,9 @@ defmodule PhxCrudExerciseWeb.UserController do
 
   def show(conn, %{"id" => id}) do
 
-
     try do
       user = Accounts.get_user!(id)
+      IO.inspect user
       render(conn, "show.json", user: user)
     rescue
       Ecto.NoResultsError ->
